@@ -1,0 +1,29 @@
+{
+  "name": "crypto-ui",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "ethereumjs-testrpc": "^6.0.3",
+    "fs": "0.0.1-security",
+    "ganache-cli": "^6.0.3",
+    "moment": "^2.20.1",
+    "react": "^16.2.0",
+    "react-datetime": "^2.14.0",
+    "react-dom": "^16.2.0",
+    "react-dropdown": "^1.4.0",
+    "react-dynamic-modal": "^1.1.1",
+    "react-scripts": "1.1.1",
+    "react-stack-grid": "^0.7.1",
+    "react-tabs": "^2.2.1",
+    "solc": "^0.4.20",
+    "toastr": "^2.1.4",
+    "truffle": "^4.0.6",
+    "web3": "^0.20.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
