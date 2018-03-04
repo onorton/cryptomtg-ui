@@ -4,7 +4,7 @@ import AddItemDialog from './AddItemDialog'
 import RemoveItemDialog from './RemoveItemDialog'
 
 const Web3 = require('web3')
-const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
+const web3 = new Web3(window.web3.currentProvider)
 const toastr = require('toastr');
 
 const tradeInfo = require('../truffle/build/contracts/Trade.json')
@@ -79,7 +79,9 @@ export default class Trade extends Component {
     tradeInstance.ItemAdded(function(error, event) {
       if(!error) {
         if (event.args.owner != trade.props.address) {
-          toastr.warning(opposite + " added a copy of " + CardContract.at(event.args.card).name() + " to a trade.")
+           CardContract.at(event.args.card).name(function(error, name) {
+             toastr.warning(opposite + " added a copy of " + name + " to a trade.")
+           })
         }
         trade.props.updateParent()
       }
@@ -88,7 +90,9 @@ export default class Trade extends Component {
     tradeInstance.ItemRemoved(function(error, event) {
       if(!error) {
         if (event.args.owner != trade.props.address) {
-          toastr.warning(opposite + " removed a copy of " + CardContract.at(event.args.card).name() + " from a trade.")
+           CardContract.at(event.args.card).name(function(error, name) {
+             toastr.warning(opposite + " removed a copy of " + name + " from a trade.")
+           })
         }
         trade.props.updateParent()
       }
@@ -107,9 +111,7 @@ export default class Trade extends Component {
 
   accept() {
     const tradeInstance = TradeContract.at(this.props.tradeAddress)
-    console.log(tradeInstance.firstAccepted())
-    console.log(tradeInstance.secondAccepted())
-    tradeInstance.accept({from: this.props.address, gas:100000})
+    tradeInstance.accept({from: this.props.address, gas:100000}, (error, transaction) =>{})
 
   }
 

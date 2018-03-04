@@ -3,7 +3,7 @@ import './AuctionItem.css'
 const toastr = require('toastr');
 
 const Web3 = require('web3')
-const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
+const web3 = new Web3(window.web3.currentProvider)
 const auctionInfo = require('../truffle/build/contracts/CardAuction.json')
 const cardInfo = require('../truffle/build/contracts/Card.json')
 const AuctionContract = web3.eth.contract(auctionInfo.abi);
@@ -20,9 +20,13 @@ export default class AuctionItem extends Component {
       const auction = AuctionContract.at(this.props.auctionAddress)
       auction.AuctionEnded(function(error, event) {
       if(!error) {
-      if (auction.beneficiary() == auctionItem.props.address) {
-        toastr.success("Congratulations!. You've just sold a \"" + auctionItem.props.name + "\" for " + auction.highestBid() + "." )
-      }
+        auction.beneficiary(function(error, beneficiary) {
+          auction.highestBid(function(error, bid) {
+          if (beneficiary == auctionItem.props.address) {
+            toastr.success("Congratulations!. You've just sold a \"" + auctionItem.props.name + "\" for " + bid + "." )
+          }
+        })
+        })
 
       if (event.args.winner == auctionItem.props.address) {
         toastr.success("Congratulations!. You've just bought a \"" + auctionItem.props.name + "\".")
@@ -47,8 +51,9 @@ export default class AuctionItem extends Component {
 
     componentDidMount() {
       // try withdrawing from auction
-      const auction =  AuctionContract.at(this.props.auctionAddress)
-      auction.withdraw({from: this.props.address, gas: 100000})
+      // const auction =  AuctionContract.at(this.props.auctionAddress)
+      // console.log("Trying to withdraw money")
+      // auction.withdraw({from: this.props.address, gas: 100000})
 
       this.timerID = setInterval(
         () => this.tick(),
@@ -67,9 +72,15 @@ export default class AuctionItem extends Component {
       if(this.props.endTime-this.state.date <= 0 && !this.state.ended) {
         // send auction end to blockchain
         console.log("end auction")
-        this.state.ended = true
-        const auction =  AuctionContract.at(this.props.auctionAddress)
-        auction.endAuction({from:this.props.address, gas:100000})
+        const auctionItem = this
+        auctionItem.setState({ended: true})
+
+        const auction =  AuctionContract.at(auctionItem.props.auctionAddress)
+        auction.beneficiary(function(error, beneficiary) {
+          if (auctionItem.props.address == beneficiary) {
+            auction.endAuction({from:auctionItem.props.address, gas:100000}, (error, transaction) => {})
+          }
+        })
 
       }
     }

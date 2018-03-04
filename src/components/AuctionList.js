@@ -42,7 +42,6 @@ export default class AuctionList extends Component {
   }
 
   fetchAuctions() {
-    console.log("sup")
     const auctionList = this
     fetch('http://localhost:8000/auctions/', {
       method: 'GET',

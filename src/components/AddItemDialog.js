@@ -5,7 +5,7 @@ import './dropdown.css'
 import './react-datetime.css'
 const toastr = require('toastr');
 const Web3 = require('web3')
-const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
+const web3 = new Web3(window.web3.currentProvider)
 
 const tradeInfo = require('../truffle/build/contracts/Trade.json')
 const cardInfo = require('../truffle/build/contracts/Card.json')
@@ -33,11 +33,13 @@ export default class AddItemDialog extends Component {
     const card = CardContract.at(cardAddress)
 
     // transfer ownership
-    card.transferOwnership(trade.address,  {from: addItemDialog.props.address, gas: 100000})
-    trade.addTradeItem(cardAddress,{from: this.props.address, gas: 500000})
+    card.transferOwnership(trade.address,  {from: addItemDialog.props.address, gas: 100000},
+    function(error, transaction) {
+    trade.addTradeItem(cardAddress,{from: addItemDialog.props.address, gas: 500000}, function(error, transaction) {
+      card.id(function(error, id) {
       fetch('http://localhost:8000/trades/add/' + addItemDialog.props.tradeAddress, {
         method: 'PUT',
-        body: JSON.stringify({card:card.id(), party:addItemDialog.props.address}),
+        body: JSON.stringify({card:id, party:addItemDialog.props.address}),
         headers: {
             "Content-Type": "application/json"
         }
@@ -48,7 +50,7 @@ export default class AddItemDialog extends Component {
             toastr.success("You have have added a " + addItemDialog.state.card + " to the trade.")
           })
 
-          fetch('http://localhost:8000/cards/transfer/'+card.id(), {
+          fetch('http://localhost:8000/cards/transfer/'+id, {
             method: 'PUT',
             body: JSON.stringify({address: addItemDialog.props.tradeAddress}),
             headers: {
@@ -65,6 +67,9 @@ export default class AddItemDialog extends Component {
       }).catch(function(error) {
         console.log('There has been a problem with your fetch operation: ' + error.message);
       });
+    })
+  })
+  })
     ModalManager.close()
   }
 

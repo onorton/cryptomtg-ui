@@ -6,8 +6,8 @@ import 'react-tabs/style/react-tabs.css';
 import CardList from './components/CardList'
 import AuctionList from './components/AuctionList'
 import TradeList from './components/TradeList'
+var web3
 const Web3 = require('web3');
-const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
 const toastr = require('toastr');
 toastr.options.closeButton = true;
 
@@ -21,15 +21,15 @@ class App extends Component {
   }
 
   componentWillMount() {
-    const app = this
-    web3.eth.getAccounts((err, accounts) => {
-      if (err) {
-        toastr.error("No accounts found.")
-      }
-      console.log(accounts[1])
-      app.setState({address:accounts[0]})
-    })
+    if (typeof window.web3 !== 'undefined') {
+        web3 = new Web3(window.web3.currentProvider);
+        this.setState({address: web3.eth.coinbase})
+    } else {
+        console.log('No web3? You should consider trying MetaMask!')
+        web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+    }
   }
+
 
 
 

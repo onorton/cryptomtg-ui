@@ -5,7 +5,7 @@ import './dropdown.css'
 import './react-datetime.css'
 const toastr = require('toastr');
 const Web3 = require('web3')
-const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
+const web3 = new Web3(window.web3.currentProvider)
 
 const tradeInfo = require('../truffle/build/contracts/Trade.json')
 const cardInfo = require('../truffle/build/contracts/Card.json')
@@ -32,11 +32,11 @@ export default class RemoveItemDialog extends Component {
     const cardAddress = this.props.cards.filter((card) => card.name==this.state.card)[0].address
     const card = CardContract.at(cardAddress)
 
-    // transfer ownership
-    trade.removeTradeItem(card.id(),{from: this.props.address, gas: 500000})
+    card.id(function(error, id) {
+    trade.removeTradeItem(id,{from: removeItemDialog.props.address, gas: 500000}, function(error, transaction) {
       fetch('http://localhost:8000/trades/remove/' + removeItemDialog.props.tradeAddress, {
         method: 'PUT',
-        body: JSON.stringify({card:card.id(), party:removeItemDialog.props.address}),
+        body: JSON.stringify({card:id, party:removeItemDialog.props.address}),
         headers: {
             "Content-Type": "application/json"
         }
@@ -64,6 +64,9 @@ export default class RemoveItemDialog extends Component {
       }).catch(function(error) {
         console.log('There has been a problem with your fetch operation: ' + error.message);
       });
+
+    })
+  })
     ModalManager.close()
   }
 
