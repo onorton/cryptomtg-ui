@@ -35,7 +35,7 @@ class App extends Component {
 
   render() {
     if (!this.state.address) {
-      return (<div/>)
+      toastr.error("<a href='http://metamask.io'>MetaMask</a> is required to use this application.")
     }
     return (
       <div className="App">
