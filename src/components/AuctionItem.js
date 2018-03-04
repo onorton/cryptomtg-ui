@@ -23,7 +23,7 @@ export default class AuctionItem extends Component {
         auction.beneficiary(function(error, beneficiary) {
           auction.highestBid(function(error, bid) {
           if (beneficiary == auctionItem.props.address) {
-            toastr.success("Congratulations!. You've just sold a \"" + auctionItem.props.name + "\" for " + bid + "." )
+            toastr.success("Congratulations!. You've just sold a \"" + auctionItem.props.name + "\" for " + web3.fromWei(bid, 'ether') + "." )
           }
         })
         })
