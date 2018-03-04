@@ -32,7 +32,7 @@ export default class AuctionItem extends Component {
         toastr.success("Congratulations!. You've just bought a \"" + auctionItem.props.name + "\".")
       }
 
-      fetch('http://localhost:8000/cards/transfer/'+event.args.id, {
+      fetch('http://cryptomtg-server.herokuapp.com/cards/transfer/'+event.args.id, {
         method: 'PUT',
         body: JSON.stringify({address: event.args.winner}),
         headers: {
@@ -125,7 +125,7 @@ export default class AuctionItem extends Component {
           toastr.error("Bid was not high enough.")
           return
         }
-        fetch('http://localhost:8000/auctions/bid/' + auctionItem.props.auctionAddress, {
+        fetch('http://cryptomtg-server.herokuapp.com/auctions/bid/' + auctionItem.props.auctionAddress, {
           method: 'PUT',
           body: JSON.stringify({bid: auctionItem.state.bid}),
           headers: {

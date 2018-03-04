@@ -31,7 +31,7 @@ export default class Trade extends Component {
         toastr.success("Congratulations! You and " + opposite + " have agreed on a trade.")
 
         trade.props.cards1.map((card) => {
-          fetch('http://localhost:8000/cards/transfer/'+card.id, {
+          fetch('http://cryptomtg-server.herokuapp.com/cards/transfer/'+card.id, {
             method: 'PUT',
             body: JSON.stringify({address: trade.props.address2}),
             headers: {
@@ -46,7 +46,7 @@ export default class Trade extends Component {
         })
 
         trade.props.cards2.map((card) => {
-            fetch('http://localhost:8000/cards/transfer/'+card.id, {
+            fetch('http://cryptomtg-server.herokuapp.com/cards/transfer/'+card.id, {
               method: 'PUT',
               body: JSON.stringify({address:  trade.props.address1}),
               headers: {
@@ -60,7 +60,7 @@ export default class Trade extends Component {
             });
         })
 
-        fetch('http://localhost:8000/trades/'+trade.props.address + '/', {
+        fetch('http://cryptomtg-server.herokuapp.com/trades/'+trade.props.address + '/', {
           method: 'DELETE',
           body: JSON.stringify({address:  trade.props.tradeAddress}),
           headers: {
@@ -123,7 +123,7 @@ export default class Trade extends Component {
       if (!error) {
         // transfer cards back
         trade.props.cards1.map((card) => {
-          fetch('http://localhost:8000/cards/transfer/'+card.id, {
+          fetch('http://cryptomtg-server.herokuapp.com/cards/transfer/'+card.id, {
             method: 'PUT',
             body: JSON.stringify({address: trade.props.address1}),
             headers: {
@@ -139,7 +139,7 @@ export default class Trade extends Component {
         })
 
         trade.props.cards2.map((card) => {
-            fetch('http://localhost:8000/cards/transfer/'+card.id, {
+            fetch('http://cryptomtg-server.herokuapp.com/cards/transfer/'+card.id, {
               method: 'PUT',
               body: JSON.stringify({address:  trade.props.address2}),
               headers: {
@@ -154,7 +154,7 @@ export default class Trade extends Component {
             });
         })
 
-        fetch('http://localhost:8000/trades/'+trade.props.address + '/', {
+        fetch('http://cryptomtg-server.herokuapp.com/trades/'+trade.props.address + '/', {
           method: 'DELETE',
           body: JSON.stringify({address:  trade.props.tradeAddress}),
           headers: {
@@ -183,7 +183,7 @@ export default class Trade extends Component {
 
   openAddItem(){
     const trade = this
-    fetch('http://localhost:8000/cards/' + trade.props.address +'/', {
+    fetch('http://cryptomtg-server.herokuapp.com/cards/' + trade.props.address +'/', {
       method: 'GET',
       headers: {
           "Content-Type": "application/json"

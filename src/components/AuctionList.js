@@ -18,7 +18,7 @@ export default class AuctionList extends Component {
   componentDidMount() {
     const auctionList = this
     this.fetchAuctions()
-    fetch('http://localhost:8000/cards/' + this.props.address +'/', {
+    fetch('http://cryptomtg-server.herokuapp.com/cards/' + this.props.address +'/', {
       method: 'GET',
       headers: {
           "Content-Type": "application/json"
@@ -43,7 +43,7 @@ export default class AuctionList extends Component {
 
   fetchAuctions() {
     const auctionList = this
-    fetch('http://localhost:8000/auctions/', {
+    fetch('http://cryptomtg-server.herokuapp.com/auctions/', {
       method: 'GET',
       headers: {
           "Content-Type": "application/json"

@@ -16,7 +16,7 @@ export default class TradeList extends Component {
   componentDidMount() {
     const tradeList = this
     this.fetchTrades()
-    fetch('http://localhost:8000/cards/' + this.props.address +'/', {
+    fetch('http://cryptomtg-server.herokuapp.com/cards/' + this.props.address +'/', {
       method: 'GET',
       headers: {
           "Content-Type": "application/json"
@@ -42,7 +42,7 @@ export default class TradeList extends Component {
   fetchTrades() {
     const tradeList = this
 
-        fetch('http://localhost:8000/trades/' + this.props.address + '/', {
+        fetch('http://cryptomtg-server.herokuapp.com/trades/' + this.props.address + '/', {
           method: 'GET',
           headers: {
               "Content-Type": "application/json"

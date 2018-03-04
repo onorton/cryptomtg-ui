@@ -37,7 +37,7 @@ export default class AddItemDialog extends Component {
     function(error, transaction) {
     trade.addTradeItem(cardAddress,{from: addItemDialog.props.address, gas: 500000}, function(error, transaction) {
       card.id(function(error, id) {
-      fetch('http://localhost:8000/trades/add/' + addItemDialog.props.tradeAddress, {
+      fetch('http://cryptomtg-server.herokuapp.com/trades/add/' + addItemDialog.props.tradeAddress, {
         method: 'PUT',
         body: JSON.stringify({card:id, party:addItemDialog.props.address}),
         headers: {
@@ -50,7 +50,7 @@ export default class AddItemDialog extends Component {
             toastr.success("You have have added a " + addItemDialog.state.card + " to the trade.")
           })
 
-          fetch('http://localhost:8000/cards/transfer/'+id, {
+          fetch('http://cryptomtg-server.herokuapp.com/cards/transfer/'+id, {
             method: 'PUT',
             body: JSON.stringify({address: addItemDialog.props.tradeAddress}),
             headers: {

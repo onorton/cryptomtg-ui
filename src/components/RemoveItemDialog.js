@@ -34,7 +34,7 @@ export default class RemoveItemDialog extends Component {
 
     card.id(function(error, id) {
     trade.removeTradeItem(id,{from: removeItemDialog.props.address, gas: 500000}, function(error, transaction) {
-      fetch('http://localhost:8000/trades/remove/' + removeItemDialog.props.tradeAddress, {
+      fetch('http://cryptomtg-server.herokuapp.com/trades/remove/' + removeItemDialog.props.tradeAddress, {
         method: 'PUT',
         body: JSON.stringify({card:id, party:removeItemDialog.props.address}),
         headers: {
@@ -47,7 +47,7 @@ export default class RemoveItemDialog extends Component {
             toastr.success("You have have added a " + removeItemDialog.state.card + " to the trade.")
           })
 
-          fetch('http://localhost:8000/cards/transfer/'+card.id(), {
+          fetch('http://cryptomtg-server.herokuapp.com/cards/transfer/'+card.id(), {
             method: 'PUT',
             body: JSON.stringify({address: removeItemDialog.props.address}),
             headers: {

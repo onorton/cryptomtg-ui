@@ -54,7 +54,7 @@ export default class AuctionDialog extends Component {
                 function(error,transaction) {
                     card.id(function (error, id) {
                       card.name(function(error, name) {
-                      fetch('http://localhost:8000/auctions/', {
+                      fetch('http://cryptomtg-server.herokuapp.com/auctions/', {
                         method: 'POST',
                         body: JSON.stringify({id: id, address: auction.address, minimumBid:auctionDialog.state.minimumBid, auctionEnd:auctionDialog.state.date}),
                         headers: {
@@ -69,7 +69,7 @@ export default class AuctionDialog extends Component {
 
                           })
 
-                          fetch('http://localhost:8000/cards/transfer/'+id, {
+                          fetch('http://cryptomtg-server.herokuapp.com/cards/transfer/'+id, {
                             method: 'PUT',
                             body: JSON.stringify({address: auction.address}),
                             headers: {

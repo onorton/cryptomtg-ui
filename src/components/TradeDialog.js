@@ -44,7 +44,7 @@ export default class TradeDialog extends Component {
           function(error,transaction) {
               card.id(function (error, id) {
 
-        fetch('http://localhost:8000/trades/' + tradeDialog.props.address + '/', {
+        fetch('http://cryptomtg-server.herokuapp.com/trades/' + tradeDialog.props.address + '/', {
           method: 'POST',
           body: JSON.stringify({card:id, address: trade.address, firstParty:tradeDialog.state.address, secondParty:tradeDialog.state.secondParty}),
           headers: {
@@ -57,7 +57,7 @@ export default class TradeDialog extends Component {
               tradeDialog.props.updateParent()
             })
 
-            fetch('http://localhost:8000/cards/transfer/'+id, {
+            fetch('http://cryptomtg-server.herokuapp.com/cards/transfer/'+id, {
               method: 'PUT',
               body: JSON.stringify({address: trade.address}),
               headers: {

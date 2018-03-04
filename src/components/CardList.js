@@ -41,7 +41,7 @@ export default class CardList extends Component {
 
     const cardList = this
     if (this.props.address) {
-    fetch('http://localhost:8000/cards/' + cardList.props.address + '/', {
+    fetch('http://cryptomtg-server.herokuapp.com/cards/' + cardList.props.address + '/', {
       method: 'GET',
       headers: {
           "Content-Type": "application/json"
@@ -68,7 +68,7 @@ export default class CardList extends Component {
     cardInstance.name(function(error, name) {
       console.log(name)
       cardInstance.id(function(error, id) {
-        fetch('http://localhost:8000/cards/' + cardList.props.address +"/", {
+        fetch('http://cryptomtg-server.herokuapp.com/cards/' + cardList.props.address +"/", {
           method: 'POST',
           body: JSON.stringify({name: name, id: id, address: cardInstance.address}),
           headers: {
